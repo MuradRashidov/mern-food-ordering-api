@@ -1,6 +1,18 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
-
+const getRestaurant = async(req:Request,res:Response) => {
+    try {
+        const restaurantId = req.params.restaurantId
+        const restaurant = await Restaurant.findById(restaurantId);
+        if (!restaurant) {
+            return res.status(404).json({message:"Restaurant not found"});
+        }
+        return res.json(restaurant);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message:"Something went wrong"});
+    }
+}
 const searchRestaurants = async(req:Request,res:Response) => {
     console.log(123);
     
@@ -54,4 +66,4 @@ try {
 }
 };
 
-export default {searchRestaurants};
+export default {searchRestaurants,getRestaurant};
